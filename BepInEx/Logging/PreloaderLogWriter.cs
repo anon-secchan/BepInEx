@@ -63,8 +63,23 @@ namespace BepInEx.Logging
                 Console.SetOut(this);
             else
                 Console.SetOut(TextWriter.Null);
+            try
+            {
+                Trace.Listeners.Add(traceListener);
+            }
+            catch (Exception ex)
+            {
+                // VirtualCast用エラー回避
+                //   Error Initializing the configuration system.
+                //   at System.Configuration.ClientConfigurationSystem.get_Configuration ()
+                //
+                // FIXME: 例外発生の原因の特定・修正
 
-            Trace.Listeners.Add(traceListener);
+                /*
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+                */
+            }
 
             _enabled = true;
         }
